@@ -1,7 +1,7 @@
 server:
   servlet:
-    context-path: /advertise/v1
-  port: 8080
+    context-path: /advertise-system/v1
+  port: 8081
 management:
   endpoints:
     web:

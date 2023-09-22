@@ -1,7 +1,6 @@
 package dev.brunocesar.imovelsimplificado.advertise.controllers;
 
 import dev.brunocesar.imovelsimplificado.advertise.controllers.requests.AdvertiseRequest;
-import dev.brunocesar.imovelsimplificado.advertise.controllers.requests.NewAdvertiseRequest;
 import dev.brunocesar.imovelsimplificado.advertise.controllers.responses.AdvertiseResponse;
 import dev.brunocesar.imovelsimplificado.advertise.services.AdvertiseService;
 import jakarta.validation.Valid;
@@ -19,18 +18,18 @@ public class AdvertiseController {
     }
 
     @PostMapping
-    public AdvertiseResponse save(@RequestBody @Valid NewAdvertiseRequest request) {
+    public AdvertiseResponse save(@RequestBody @Valid AdvertiseRequest request) {
         return service.save(request);
     }
 
-    @GetMapping("{id}")
-    public AdvertiseResponse get(@PathVariable @NotNull Long id) {
-        return service.get(id);
+    @GetMapping("{uuid}")
+    public AdvertiseResponse get(@PathVariable @NotNull String uuid) {
+        return service.get(uuid);
     }
 
     @PutMapping("{id}")
-    public AdvertiseResponse update(@PathVariable @NotNull Long id,
+    public AdvertiseResponse update(@PathVariable @NotNull String uuid,
                                     @RequestBody @Valid AdvertiseRequest request) {
-        return service.update(id, request);
+        return service.update(uuid, request);
     }
 }
