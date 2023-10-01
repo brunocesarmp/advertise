@@ -5,7 +5,6 @@ import lombok.Data;
 @Data
 public class AdvertiseResponse {
 
-    private String uuid;
     private String firstName;
     private String lastName;
     private String email;

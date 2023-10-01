@@ -22,7 +22,7 @@ public class AdvertiseService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public AdvertiseResponse save(AdvertiseRequest request) {
         var entity = convertToEntity(request);
         if (repository.findByEmail(request.getEmail()).isPresent()) {
@@ -37,21 +37,17 @@ public class AdvertiseService {
         return convertToResponse(entity);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public AdvertiseResponse update(String uuid, AdvertiseRequest request) {
         var entity = findEntityByUuid(uuid);
         var entityWithSameEmailOpt = repository.findByEmail(request.getEmail());
         if (entityWithSameEmailOpt.isPresent()
-                && !isTheSameEmail(entityWithSameEmailOpt.get(), request)) {
-            throw new ApplicationException(400, "Email já cadastrado");
+                && !entity.getUuid().equalsIgnoreCase(entityWithSameEmailOpt.get().getUuid())) {
+            throw new ApplicationException(400, "Email já cadastrado, favor escolher outro email");
         }
         updateEntity(entity, request);
         repository.save(entity);
         return convertToResponse(entity);
-    }
-
-    private boolean isTheSameEmail(Advertise entity, AdvertiseRequest request) {
-        return entity.getEmail().equalsIgnoreCase(request.getEmail());
     }
 
     private Advertise findEntityByUuid(String uuid) {
@@ -75,7 +71,6 @@ public class AdvertiseService {
 
     private AdvertiseResponse convertToResponse(Advertise entity) {
         var response = new AdvertiseResponse();
-        response.setUuid(entity.getUuid());
         response.setFirstName(entity.getFirstName());
         response.setLastName(entity.getLastName());
         response.setEmail(entity.getEmail());
