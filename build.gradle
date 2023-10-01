@@ -22,6 +22,7 @@ ext {
 	set("lombokVersion", "1.18.24")
 	set("h2Version", "2.2.224")
 	set("mySqlConectorVersion", "8.0.33")
+	set("jwtVersion", "0.11.5")
 }
 
 dependencies {
@@ -29,10 +30,15 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 
 	implementation "org.projectlombok:lombok:${lombokVersion}"
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	implementation "io.jsonwebtoken:jjwt-api:${jwtVersion}"
+	implementation "io.jsonwebtoken:jjwt-impl:${jwtVersion}"
+	implementation "io.jsonwebtoken:jjwt-jackson:${jwtVersion}"
 
 	runtimeOnly "mysql:mysql-connector-java:${mySqlConectorVersion}"
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

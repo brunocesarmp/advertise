@@ -5,6 +5,8 @@ import dev.brunocesar.imovelsimplificado.advertise.controllers.responses.Adverti
 import dev.brunocesar.imovelsimplificado.advertise.domains.entity.Advertise;
 import dev.brunocesar.imovelsimplificado.advertise.domains.repository.AdvertiseRepository;
 import dev.brunocesar.imovelsimplificado.advertise.exceptions.AdvertiseNotFoundException;
+import dev.brunocesar.imovelsimplificado.advertise.exceptions.ApplicationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,14 +14,20 @@ import org.springframework.transaction.annotation.Transactional;
 public class AdvertiseService {
 
     private final AdvertiseRepository repository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    public AdvertiseService(AdvertiseRepository repository) {
+    public AdvertiseService(AdvertiseRepository repository,
+                            BCryptPasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
     public AdvertiseResponse save(AdvertiseRequest request) {
         var entity = convertToEntity(request);
+        if (repository.findByEmail(request.getEmail()).isPresent()) {
+            throw new ApplicationException(400, "Email já cadastrado");
+        }
         repository.save(entity);
         return convertToResponse(entity);
     }
@@ -32,9 +40,18 @@ public class AdvertiseService {
     @Transactional
     public AdvertiseResponse update(String uuid, AdvertiseRequest request) {
         var entity = findEntityByUuid(uuid);
+        var entityWithSameEmailOpt = repository.findByEmail(request.getEmail());
+        if (entityWithSameEmailOpt.isPresent()
+                && !isTheSameEmail(entityWithSameEmailOpt.get(), request)) {
+            throw new ApplicationException(400, "Email já cadastrado");
+        }
         updateEntity(entity, request);
         repository.save(entity);
         return convertToResponse(entity);
+    }
+
+    private boolean isTheSameEmail(Advertise entity, AdvertiseRequest request) {
+        return entity.getEmail().equalsIgnoreCase(request.getEmail());
     }
 
     private Advertise findEntityByUuid(String uuid) {
@@ -45,6 +62,7 @@ public class AdvertiseService {
     private Advertise convertToEntity(AdvertiseRequest request) {
         var entity = new Advertise();
         updateEntity(entity, request);
+        entity.setPassword(passwordEncoder.encode(request.getPassword()));
         return entity;
     }
 
