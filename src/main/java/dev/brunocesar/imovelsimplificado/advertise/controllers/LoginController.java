@@ -18,9 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController {
 
     private final AuthenticationManager authenticationManager;
-
     private final JwtTokenUtil jwtTokenUtil;
-
 
     public LoginController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil) {
         this.authenticationManager = authenticationManager;

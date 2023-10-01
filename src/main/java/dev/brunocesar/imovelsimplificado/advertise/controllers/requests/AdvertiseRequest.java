@@ -27,6 +27,8 @@ public class AdvertiseRequest {
     @Size(min = 10, max = 11, message = "Telefone de contato deve conter entre {min} e {max} números. Ex.: 11912345314")
     private String phone;
 
+    @NotBlank(message = "Senha deve ser informada")
+    @Size(min = 6, max = 20, message = "Senha deve possuir entre {min} e {max} caracteres")
     private String password;
 
 }
