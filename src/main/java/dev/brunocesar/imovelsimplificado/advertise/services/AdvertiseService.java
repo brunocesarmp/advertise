@@ -7,6 +7,7 @@ import dev.brunocesar.imovelsimplificado.advertise.domains.repository.AdvertiseR
 import dev.brunocesar.imovelsimplificado.advertise.exceptions.AdvertiseNotFoundException;
 import dev.brunocesar.imovelsimplificado.advertise.exceptions.ApplicationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,10 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class AdvertiseService {
 
     private final AdvertiseRepository repository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     public AdvertiseService(AdvertiseRepository repository,
-                            BCryptPasswordEncoder passwordEncoder) {
+                            PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
     }
