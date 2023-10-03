@@ -1,6 +1,7 @@
 package dev.brunocesar.imovelsimplificado.advertise.controllers;
 
 import dev.brunocesar.imovelsimplificado.advertise.controllers.requests.AdvertiseRequest;
+import dev.brunocesar.imovelsimplificado.advertise.controllers.requests.NewAdvertiseRequest;
 import dev.brunocesar.imovelsimplificado.advertise.controllers.responses.AdvertiseResponse;
 import dev.brunocesar.imovelsimplificado.advertise.security.AdvertiseUserDetails;
 import dev.brunocesar.imovelsimplificado.advertise.services.AdvertiseService;
@@ -23,7 +24,7 @@ public class AdvertiseController {
     }
 
     @PostMapping
-    public AdvertiseResponse save(@RequestBody @Valid AdvertiseRequest request) {
+    public AdvertiseResponse save(@RequestBody @Valid NewAdvertiseRequest request) {
         return service.save(request);
     }
 

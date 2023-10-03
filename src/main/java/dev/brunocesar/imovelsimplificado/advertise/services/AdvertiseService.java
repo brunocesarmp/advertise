@@ -1,6 +1,7 @@
 package dev.brunocesar.imovelsimplificado.advertise.services;
 
 import dev.brunocesar.imovelsimplificado.advertise.controllers.requests.AdvertiseRequest;
+import dev.brunocesar.imovelsimplificado.advertise.controllers.requests.NewAdvertiseRequest;
 import dev.brunocesar.imovelsimplificado.advertise.controllers.responses.AdvertiseResponse;
 import dev.brunocesar.imovelsimplificado.advertise.domains.entity.Advertise;
 import dev.brunocesar.imovelsimplificado.advertise.domains.repository.AdvertiseRepository;
@@ -24,7 +25,7 @@ public class AdvertiseService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public AdvertiseResponse save(AdvertiseRequest request) {
+    public AdvertiseResponse save(NewAdvertiseRequest request) {
         var entity = convertToEntity(request);
         if (repository.findByEmail(request.getEmail()).isPresent()) {
             throw new ApplicationException(400, "Email já cadastrado");
@@ -56,7 +57,7 @@ public class AdvertiseService {
                 .orElseThrow(() -> new AdvertiseNotFoundException(uuid));
     }
 
-    private Advertise convertToEntity(AdvertiseRequest request) {
+    private Advertise convertToEntity(NewAdvertiseRequest request) {
         var entity = new Advertise();
         updateEntity(entity, request);
         entity.setPassword(passwordEncoder.encode(request.getPassword()));
