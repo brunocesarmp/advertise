@@ -72,6 +72,7 @@ public class AdvertiseService {
 
     private AdvertiseResponse convertToResponse(Advertise entity) {
         var response = new AdvertiseResponse();
+        response.setUuid(entity.getUuid());
         response.setFirstName(entity.getFirstName());
         response.setLastName(entity.getLastName());
         response.setEmail(entity.getEmail());
