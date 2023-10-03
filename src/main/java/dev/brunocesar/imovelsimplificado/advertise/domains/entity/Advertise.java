@@ -28,11 +28,14 @@ public class Advertise {
     @Column(nullable = false)
     private String lastName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
     private String phone;
+
+    @Column
+    private String password;
 
     @PrePersist
     public void prePersist() {

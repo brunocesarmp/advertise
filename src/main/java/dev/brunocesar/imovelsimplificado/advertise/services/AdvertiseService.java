@@ -1,10 +1,14 @@
 package dev.brunocesar.imovelsimplificado.advertise.services;
 
 import dev.brunocesar.imovelsimplificado.advertise.controllers.requests.AdvertiseRequest;
+import dev.brunocesar.imovelsimplificado.advertise.controllers.requests.NewAdvertiseRequest;
 import dev.brunocesar.imovelsimplificado.advertise.controllers.responses.AdvertiseResponse;
 import dev.brunocesar.imovelsimplificado.advertise.domains.entity.Advertise;
 import dev.brunocesar.imovelsimplificado.advertise.domains.repository.AdvertiseRepository;
 import dev.brunocesar.imovelsimplificado.advertise.exceptions.AdvertiseNotFoundException;
+import dev.brunocesar.imovelsimplificado.advertise.exceptions.ApplicationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,14 +16,20 @@ import org.springframework.transaction.annotation.Transactional;
 public class AdvertiseService {
 
     private final AdvertiseRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-    public AdvertiseService(AdvertiseRepository repository) {
+    public AdvertiseService(AdvertiseRepository repository,
+                            PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    @Transactional
-    public AdvertiseResponse save(AdvertiseRequest request) {
+    @Transactional(rollbackFor = Exception.class)
+    public AdvertiseResponse save(NewAdvertiseRequest request) {
         var entity = convertToEntity(request);
+        if (repository.findByEmail(request.getEmail()).isPresent()) {
+            throw new ApplicationException(400, "Email já cadastrado");
+        }
         repository.save(entity);
         return convertToResponse(entity);
     }
@@ -29,9 +39,14 @@ public class AdvertiseService {
         return convertToResponse(entity);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public AdvertiseResponse update(String uuid, AdvertiseRequest request) {
         var entity = findEntityByUuid(uuid);
+        var entityWithSameEmailOpt = repository.findByEmail(request.getEmail());
+        if (entityWithSameEmailOpt.isPresent()
+                && !entity.getUuid().equalsIgnoreCase(entityWithSameEmailOpt.get().getUuid())) {
+            throw new ApplicationException(400, "Email já cadastrado, favor escolher outro email");
+        }
         updateEntity(entity, request);
         repository.save(entity);
         return convertToResponse(entity);
@@ -42,9 +57,10 @@ public class AdvertiseService {
                 .orElseThrow(() -> new AdvertiseNotFoundException(uuid));
     }
 
-    private Advertise convertToEntity(AdvertiseRequest request) {
+    private Advertise convertToEntity(NewAdvertiseRequest request) {
         var entity = new Advertise();
         updateEntity(entity, request);
+        entity.setPassword(passwordEncoder.encode(request.getPassword()));
         return entity;
     }
 

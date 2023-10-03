@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public abstract class ApplicationException extends RuntimeException {
+public class ApplicationException extends RuntimeException {
 
     private int httpStatus;
 
