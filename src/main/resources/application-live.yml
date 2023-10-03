@@ -16,3 +16,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
   datasource:
     url: jdbc:mysql://advert-rds.cjdz8mocsswq.us-east-1.rds.amazonaws.com:3306/db_advertise?serverTimezone=UTC&useSSL=false
+
+jwt:
+  secret: JWT_SECRET
+  expirationSeconds: 3600
