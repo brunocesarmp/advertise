@@ -1,4 +1,4 @@
-package dev.brunocesar.imovelsimplificado.advertise.controllers.handler;
+package dev.brunocesar.imovelsimplificado.advertise.configs.handler;
 
 import lombok.Data;
 

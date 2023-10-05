@@ -1,4 +1,4 @@
-package dev.brunocesar.imovelsimplificado.advertise.security;
+package dev.brunocesar.imovelsimplificado.advertise.configs.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

@@ -1,4 +1,4 @@
-package dev.brunocesar.imovelsimplificado.advertise.security;
+package dev.brunocesar.imovelsimplificado.advertise.configs.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
