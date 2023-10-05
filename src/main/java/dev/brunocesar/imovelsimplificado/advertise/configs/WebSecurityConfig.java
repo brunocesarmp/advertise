@@ -21,8 +21,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class WebSecurityConfig {
 
+    private static final String[] PUBLIC_MATCHERS;
+
     private final SecurityFilter securityFilter;
     private final JwtAuthenticationEntryPoint unauthorizedHandler;
+
+    static {
+        PUBLIC_MATCHERS = new String[]{"/health", "/swagger-ui/**", "/v3/api-docs/**"};
+    }
 
     public WebSecurityConfig(SecurityFilter securityFilter,
                              JwtAuthenticationEntryPoint unauthorizedHandler) {
@@ -55,8 +61,7 @@ public class WebSecurityConfig {
         httpSecurity.exceptionHandling(configure -> configure.authenticationEntryPoint(unauthorizedHandler));
 
         httpSecurity.authorizeHttpRequests(configure -> configure
-                .requestMatchers("/health", "/docs.html", "/swagger-ui/**",
-                        "/webjars/swagger-ui/**", "/docs/**").permitAll()
+                .requestMatchers(PUBLIC_MATCHERS).permitAll()
                 .requestMatchers(HttpMethod.POST, "/advertise", "/login").permitAll()
                 .anyRequest().authenticated());
 
