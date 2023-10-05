@@ -1,8 +1,9 @@
-package dev.brunocesar.imovelsimplificado.advertise.controllers.handler;
+package dev.brunocesar.imovelsimplificado.advertise.configs.handler;
 
 import dev.brunocesar.imovelsimplificado.advertise.exceptions.ApplicationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,8 +23,8 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(response.getHttpStatus()).body(response);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApplicationErrorResponse> handleValidationErrors(MethodArgumentNotValidException ex) {
+    @ExceptionHandler(BindException.class)
+    public ResponseEntity<ApplicationErrorResponse> handleValidationErrors(BindException ex) {
         var errors = ex.getBindingResult().getFieldErrors()
                 .stream()
                 .map(FieldError::getDefaultMessage)

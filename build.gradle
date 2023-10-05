@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.1.3'
 	id 'io.spring.dependency-management' version '1.1.3'
+	id 'jacoco'
 }
 
 group = 'dev.brunocesar.imovelsimplificado'
@@ -23,6 +24,8 @@ ext {
 	set("h2Version", "2.2.224")
 	set("mySqlConectorVersion", "8.0.33")
 	set("jwtVersion", "0.11.5")
+	set("springDocVersion", "2.2.0")
+	set("springWebTestClientVersion", "3.0.0")
 }
 
 dependencies {
@@ -40,11 +43,41 @@ dependencies {
 	implementation "io.jsonwebtoken:jjwt-impl:${jwtVersion}"
 	implementation "io.jsonwebtoken:jjwt-jackson:${jwtVersion}"
 
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+
 	runtimeOnly "mysql:mysql-connector-java:${mySqlConectorVersion}"
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation "org.springframework.restdocs:spring-restdocs-webtestclient:${springWebTestClientVersion}"
 	testImplementation "com.h2database:h2:${h2Version}"
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+	dependsOn 'cleanTest'
+	finalizedBy jacocoTestReport
+}
+
+jacoco {
+	toolVersion = "0.8.9"
+}
+
+jacocoTestReport {
+	dependsOn test
+	reports {
+		xml.required = false
+		csv.required = false
+		html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+	}
+	afterEvaluate {
+		getClassDirectories().setFrom(classDirectories.files.collect({
+			fileTree(dir: it, exclude: [
+					'dev/brunocesar/imovelsimplificado/advertise/configs/**',
+					'dev/brunocesar/imovelsimplificado/advertise/domains/**',
+					'dev/brunocesar/imovelsimplificado/advertise/controllers/requests/**',
+					'dev/brunocesar/imovelsimplificado/advertise/controllers/responses/**',
+					'dev/brunocesar/imovelsimplificado/advertise/controllers/exceptions/**',
+					'dev/brunocesar/imovelsimplificado/advertise/AdvertiseApplication.class'
+			])
+		}))
+	}
 }

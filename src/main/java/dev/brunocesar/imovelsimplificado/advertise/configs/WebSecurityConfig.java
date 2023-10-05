@@ -1,7 +1,7 @@
 package dev.brunocesar.imovelsimplificado.advertise.configs;
 
-import dev.brunocesar.imovelsimplificado.advertise.security.JwtAuthenticationEntryPoint;
-import dev.brunocesar.imovelsimplificado.advertise.security.SecurityFilter;
+import dev.brunocesar.imovelsimplificado.advertise.configs.security.JwtAuthenticationEntryPoint;
+import dev.brunocesar.imovelsimplificado.advertise.configs.security.SecurityFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -55,7 +55,8 @@ public class WebSecurityConfig {
         httpSecurity.exceptionHandling(configure -> configure.authenticationEntryPoint(unauthorizedHandler));
 
         httpSecurity.authorizeHttpRequests(configure -> configure
-                .requestMatchers("/health").permitAll()
+                .requestMatchers("/health", "/docs.html", "/swagger-ui/**",
+                        "/webjars/swagger-ui/**", "/docs/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/advertise", "/login").permitAll()
                 .anyRequest().authenticated());
 
