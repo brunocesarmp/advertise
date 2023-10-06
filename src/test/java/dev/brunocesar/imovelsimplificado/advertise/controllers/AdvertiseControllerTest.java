@@ -5,7 +5,6 @@ import dev.brunocesar.imovelsimplificado.advertise.services.AdvertiseService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 
@@ -34,7 +33,7 @@ class AdvertiseControllerTest extends AbstractBaseControllerTest {
 
     @Test
     public void shouldGetAdvertiseWithSuccess() {
-        when(service.get(Mockito.any())).thenReturn(advertiseResponse);
+        when(service.get(any())).thenReturn(advertiseResponse);
         super.webTestClient.get()
                 .uri("/advertise/me")
                 .exchange()
