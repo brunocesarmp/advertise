@@ -22,10 +22,7 @@ public interface IAdvertiseController {
             @ApiResponse(
                     responseCode = "201",
                     description = "Anunciante criado com sucesso",
-                    content = {
-                            @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = AdvertiseResponse.class))
-                    }),
+                    useReturnTypeSchema = true),
             @ApiResponse(
                     responseCode = "400",
                     description = "Quando houver falha nos dados enviados",
@@ -57,10 +54,7 @@ public interface IAdvertiseController {
             @ApiResponse(
                     responseCode = "200",
                     description = "Anunciante encontrado com sucesso",
-                    content = {
-                            @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = AdvertiseResponse.class))
-                    }),
+                    useReturnTypeSchema = true),
             @ApiResponse(
                     responseCode = "401",
                     description = "Quando houver falha de autenticação",
@@ -85,10 +79,7 @@ public interface IAdvertiseController {
             @ApiResponse(
                     responseCode = "200",
                     description = "Anunciante atualizado com sucesso",
-                    content = {
-                            @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = AdvertiseResponse.class))
-                    }),
+                    useReturnTypeSchema = true),
             @ApiResponse(
                     responseCode = "400",
                     description = "Quando houver falha nos dados enviados",
