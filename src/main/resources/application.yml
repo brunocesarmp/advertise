@@ -1,0 +1,25 @@
+server:
+  url: http://localhost:8081
+  servlet:
+    context-path: /api/v1
+  port: 8081
+management:
+  endpoints:
+    web:
+      base-path: /
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+  datasource:
+    url: jdbc:mysql://localhost:3306/db_advertise?createDatabaseIfNotExist=true
+    username: root
+    password: root
+
+jwt:
+  secret: AaOpOL3tFxZ7ccj4zL5cnUAcqRjs3bcAcsWlOCcAJiASUciAsuQIEbCuioASCqwrMCAcI
+  expirationSeconds: 3600
