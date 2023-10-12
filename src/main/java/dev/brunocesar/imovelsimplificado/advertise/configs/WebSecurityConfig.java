@@ -62,6 +62,7 @@ public class WebSecurityConfig {
 
         httpSecurity.authorizeHttpRequests(configure -> configure
                 .requestMatchers(PUBLIC_MATCHERS).permitAll()
+                .requestMatchers(HttpMethod.GET, "/").permitAll()
                 .requestMatchers(HttpMethod.POST, "/advertise", "/login").permitAll()
                 .anyRequest().authenticated());
 
